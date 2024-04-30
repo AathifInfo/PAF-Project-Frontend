@@ -17,7 +17,7 @@ import { login } from "../../util/APIUtils";
 
 import { toast } from "react-toastify";
 
-function LogIn2() {
+function LogIn2({authenticated}) {
   const [state, setState] = useReducer(
     (prevState, newState) => {
       return { ...prevState, ...newState };

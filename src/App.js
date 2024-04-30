@@ -43,7 +43,7 @@ function App() {
       .then((response) => {
         setState({
           currentUser: response,
-          authenticated: true,
+          authenticated: false,
           loading: false,
         });
       })
