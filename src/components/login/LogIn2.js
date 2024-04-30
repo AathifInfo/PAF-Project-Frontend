@@ -23,7 +23,7 @@ function LogIn2() {
       return { ...prevState, ...newState };
     },
     {
-      email: "",
+      username: "",
       password: "",
     }
   );
@@ -49,11 +49,12 @@ function LogIn2() {
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         toast("You're successfully logged in!", { type: "success" });
-
+        console.log("login succuess!")
         navigate("/");
       })
       .catch((error) => {
         toast(
+          console.log("login failed!")
           (error && error.message) ||
             "Oops! Something went wrong. Please try again!",
           { type: "error" }
@@ -115,10 +116,10 @@ function LogIn2() {
               wrapperClass="mb-4"
               label="Email address"
               id="formControlLg"
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={state.email}
+              type="text"
+              name="username"
+              placeholder="User Name"
+              value={state.username}
               onChange={handleInputChange}
               required
               size="lg"
