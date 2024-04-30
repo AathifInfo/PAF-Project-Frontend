@@ -1,6 +1,7 @@
 import React from 'react';
 import "./SignUp2.css"
 import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import backImage2 from "./../../images/img/bg2.png";
 
 function SignUp2() {
 
@@ -10,7 +11,7 @@ function SignUp2() {
       <MDBRow>
 
         <MDBCol col='10' md='6'>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image" />
+          <img src={backImage2} class="img-fluid" alt="Sample image" />
         </MDBCol>
 
         <MDBCol col='4' md='6'>
