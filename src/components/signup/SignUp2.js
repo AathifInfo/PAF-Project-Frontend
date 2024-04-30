@@ -10,7 +10,7 @@ import {
   MDBCheckbox,
 } from "mdb-react-ui-kit";
 import backImage2 from "./../../images/img/bg2.png";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { ACCESS_TOKEN, GOOGLE_AUTH_URL } from "../../constants";
 import { signup } from "../../util/APIUtils";
@@ -154,10 +154,7 @@ function SignUp2({ authenticated }) {
                 Sign up
               </MDBBtn>
               <p className="small fw-bold mt-2 pt-1 mb-2">
-                Already having an account?{" "}
-                <a href="#!" className="link-danger">
-                  Login
-                </a>
+                Already having an account? <Link to="/login">Login!</Link>
               </p>
             </div>
           </form>

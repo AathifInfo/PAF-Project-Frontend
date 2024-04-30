@@ -1,6 +1,7 @@
 import React from "react";
 import "./Left.css";
 import profilepic from "../../images/profile-1.jpg";
+import { Link } from "react-router-dom";
 export default function Left() {
   return (
     <div className="left">
@@ -19,13 +20,17 @@ export default function Left() {
           <span>
             <i className="uil uil-home" />{" "}
           </span>
-          <h3>Home</h3>
+          <Link to="/">
+            <h3>Home</h3>
+          </Link>
         </a>
         <a className="menu-item">
           <span>
             <i className="uil uil-compass" />{" "}
           </span>
-          <h3>Explore</h3>
+          <Link to="/workoutplan">
+            <h3>Workout Plan</h3>
+          </Link>
         </a>
         <a className="menu-item" id="notifications">
           <span>
@@ -33,7 +38,9 @@ export default function Left() {
               <small className="notification-count">9+</small>
             </i>{" "}
           </span>
-          <h3>Notification</h3>
+          <Link to="/workoutstatus">
+            <h3>Workout Staus</h3>
+          </Link>
           {/*notification popup*/}
           <div className="notifications-popup">
             <div>
@@ -99,7 +106,9 @@ export default function Left() {
               <small className="notification-count">7</small>
             </i>{" "}
           </span>
-          <h3>Message</h3>
+          <Link to="/mealplan">
+            <h3>Meal plan</h3>
+          </Link>
         </a>
         <a className="menu-item">
           <span>

@@ -10,14 +10,14 @@ import {
   MDBCheckbox,
 } from "mdb-react-ui-kit";
 import backImage1 from "./../../images/img/bg1.png";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { ACCESS_TOKEN, GOOGLE_AUTH_URL } from "../../constants";
 import { login } from "../../util/APIUtils";
 
 import { toast } from "react-toastify";
 
-function LogIn2({authenticated}) {
+function LogIn2({ authenticated }) {
   const [state, setState] = useReducer(
     (prevState, newState) => {
       return { ...prevState, ...newState };
@@ -49,13 +49,12 @@ function LogIn2({authenticated}) {
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         toast("You're successfully logged in!", { type: "success" });
-        console.log("login succuess!")
+        console.log("login succuess!");
         navigate("/");
       })
       .catch((error) => {
         toast(
-          console.log("login failed!")
-          (error && error.message) ||
+          console.log("login failed!")(error && error.message) ||
             "Oops! Something went wrong. Please try again!",
           { type: "error" }
         );
@@ -152,10 +151,7 @@ function LogIn2({authenticated}) {
                 Login
               </MDBBtn>
               <p className="small fw-bold mt-2 pt-1 mb-2">
-                Don't have an account?{" "}
-                <a href="#!" className="link-danger">
-                  Register
-                </a>
+                Don't have an account? <Link to="/signup">Login!</Link>
               </p>
             </div>
           </form>
