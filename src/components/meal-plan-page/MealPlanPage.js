@@ -4,6 +4,7 @@ import Right from '../right/Right';
 import Header from '../header/Header';
 import "./MealPlanPage.css";
 import MiddleMealPlan from '../middlemealplan/MiddleMealPlan';
+import MealPlanForm from '../right-meal-plan-form copy/MealPlanForm';
 export default function MealPlanPage ({ authenticated, onLogout }) {
   return (
     <div>
@@ -12,7 +13,7 @@ export default function MealPlanPage ({ authenticated, onLogout }) {
        <div className='container'>
           <Left />
           <MiddleMealPlan />
-          
+          <MealPlanForm />
        </div>
     </main>
     </div>

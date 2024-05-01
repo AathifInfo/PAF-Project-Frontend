@@ -81,6 +81,14 @@ export function getAllMealPlans() {
   });
 }
 
+export function craeteMealPlans(plans) {
+  return request({
+    url: API_BASE_URL + "/api/meal/plan",
+    method: "POST",
+    body: JSON.stringify(plans),
+  });
+}
+
 // export function disLikePost({ likeId }) {
 //   return request({
 //     url: API_BASE_URL + "/posts/likes/" + likeId,
