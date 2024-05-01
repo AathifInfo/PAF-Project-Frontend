@@ -6,7 +6,11 @@ import PostService from "../../Services/PostService";
 import profile1 from "../../images/profile-11.jpg";
 import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
-import { deleteWorkoutPlanById, getAllMealPlans, getAllWorkoutPlans } from "../../util/APIUtils";
+import {
+  deleteWorkoutPlanById,
+  getAllMealPlans,
+  getAllWorkoutPlans,
+} from "../../util/APIUtils";
 import { toast } from "react-toastify";
 export default function MiddleMealPlan() {
   const [mealPlans, setMealtPlans] = useState([]);
@@ -103,7 +107,7 @@ export default function MiddleMealPlan() {
 
     deleteWorkoutPlanById(planId)
       .then((response) => {
-        console.log(planId)
+        console.log(planId);
         console.log("Delete workout plan success!", response);
         toast("Workout plan deleted successfully!", { type: "success" });
         refreshComponent();
@@ -258,45 +262,37 @@ export default function MiddleMealPlan() {
                   <b>Routing plans:</b>
                 </h6>
                 {post.recipes.map((recipe) => (
-                  <div key={recipe.recipeId} style={{ marginBottom: "10px" }}>
-                    <h6
-                      style={{
-                        color: "#333",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      {recipe.name}
-                    </h6>
-                    <ul style={{ listStyleType: "none", paddingLeft: "20px" }}>
-                      {recipe.ingredients.map((ingredient) => (
-                        <li
-                          // key={ingredient.exerciseId}
-                          style={{
-                            marginBottom: "10px",
-                            padding: "5px",
-                            borderRadius: "5px",
-                            backgroundColor: "#fff",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-                          }}
-                        >
-                          <span style={{ fontWeight: "bold" }}>
-                            {ingredient.name}
+                  <div key={recipe.recipeId} className="recipe-card">
+                    <h4 className="recipe-title">{recipe.name}</h4>
+                    <img
+                      src={recipe.photoUrl}
+                      alt={recipe.name}
+                      className="recipe-image"
+                    />
+                    <div className="recipe-details">
+                      <h5>Ingredients:</h5>
+                      <ul className="ingredients-list">
+                        {recipe.ingredients.map((ingredient, index) => (
+                          <li key={index} className="ingredient-item">
+                            {ingredient.name}: {ingredient.quantity}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="instructions">{recipe.instructions}</p>
+                      <div className="nutrition-info">
+                        <span>Calories: {recipe.nutrition.calories}</span>
+                        <span>Protein: {recipe.nutrition.protein}g</span>
+                        <span>Carbs: {recipe.nutrition.carbs}g</span>
+                        <span>Fat: {recipe.nutrition.fat}g</span>
+                      </div>
+                      <div className="dietary-preferences">
+                        {recipe.dietaryPreferences.map((preference, index) => (
+                          <span key={index} className="dietary-tag">
+                            {preference}
                           </span>
-                          <ul
-                            style={{
-                              listStyleType: "square",
-                              marginLeft: "20px",
-                              color: "#555",
-                            }}
-                          >
-                            <li>Quantity: {ingredient.quantity}</li>
-                            {/* <li>Repetitions: {exercise.repetitions}</li> */}
-                          </ul>
-                        </li>
-                      ))}
-                    </ul>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

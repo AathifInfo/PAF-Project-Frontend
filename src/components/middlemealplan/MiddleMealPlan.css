@@ -213,6 +213,75 @@
     margin-left: 0.5rem;
 }
 
+.recipe-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.recipe-title {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.recipe-details {
+    margin-top: 10px;
+}
+
+.ingredients-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ingredient-item {
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.instructions {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.nutrition-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.dietary-preferences {
+    margin-top: 10px;
+}
+
+.dietary-tag {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 3px 8px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 0.85em;
+}
+
+
 /* Media queries for small laptops and big tabs*/
 @media screen and (max-width:1200px) {
     .container{
