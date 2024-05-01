@@ -89,6 +89,13 @@ export function craeteMealPlans(plans) {
   });
 }
 
+export function deleteMealPlanById(planId) {
+  return request({
+    url: API_BASE_URL + "/api/meal/plan/" + planId,
+    method: "DELETE",
+  });
+}
+
 // export function disLikePost({ likeId }) {
 //   return request({
 //     url: API_BASE_URL + "/posts/likes/" + likeId,

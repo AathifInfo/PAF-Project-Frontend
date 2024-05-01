@@ -7,7 +7,7 @@ import profile1 from "../../images/profile-11.jpg";
 import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
 import {
-  deleteWorkoutPlanById,
+  deleteMealPlanById,
   getAllMealPlans,
   getAllWorkoutPlans,
 } from "../../util/APIUtils";
@@ -105,15 +105,15 @@ export default function MiddleMealPlan() {
   const handleDelete = (planId) => {
     // preventDefault();
 
-    deleteWorkoutPlanById(planId)
+    deleteMealPlanById(planId)
       .then((response) => {
         console.log(planId);
-        console.log("Delete workout plan success!", response);
-        toast("Workout plan deleted successfully!", { type: "success" });
+        console.log("Delete meal plan success!", response);
+        toast("Meal plan deleted successfully!", { type: "success" });
         refreshComponent();
       })
       .catch((error) => {
-        console.error("Delete workout plan failed:", error);
+        console.error("Delete meal plan failed:", error);
         toast(
           error && error.message
             ? error.message

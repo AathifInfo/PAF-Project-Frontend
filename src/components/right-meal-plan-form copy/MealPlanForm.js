@@ -17,10 +17,20 @@ function MealPlanForm() {
     setMealPlan({ ...mealPlan, [name]: value });
   };
 
-  const handleRecipeChange = (index, event) => {
-    const newRecipes = [...mealPlan.recipes];
-    newRecipes[index] = { ...newRecipes[index], [event.target.name]: event.target.value };
-    setMealPlan({ ...mealPlan, recipes: newRecipes });
+  // const handleRecipeChange = (index, event) => {
+  //   const newRecipes = [...mealPlan.recipes];
+  //   newRecipes[index] = { ...newRecipes[index], [event.target.name]: event.target.value };
+  //   setMealPlan({ ...mealPlan, recipes: newRecipes });
+  // };
+
+  const handleRecipeChange = (recipeIndex, event) => {
+    const updatedRecipes = [...mealPlan.recipes];
+    if (event.target.name in updatedRecipes[recipeIndex].nutrition) {
+      updatedRecipes[recipeIndex].nutrition[event.target.name] = event.target.value;
+    } else {
+      updatedRecipes[recipeIndex][event.target.name] = event.target.value;
+    }
+    setMealPlan({ ...mealPlan, recipes: updatedRecipes });
   };
 
   const handleIngredientChange = (recipeIndex, ingredientIndex, event) => {
@@ -64,6 +74,18 @@ function MealPlanForm() {
       return recipe;
     });
     setMealPlan({ ...mealPlan, recipes: updatedRecipes });
+  };
+
+  const addDietaryPreference = (recipeIndex) => {
+    const updatedRecipes = [...mealPlan.recipes];
+    updatedRecipes[recipeIndex].dietaryPreferences.push("");
+    setMealPlan({ ...mealPlan, recipes: updatedRecipes });
+  };
+
+  const handleDietaryPreferenceChange = (recipeIndex, index, event) => {
+      const updatedRecipes = [...mealPlan.recipes];
+      updatedRecipes[recipeIndex].dietaryPreferences[index] = event.target.value;
+      setMealPlan({ ...mealPlan, recipes: updatedRecipes });
   };
 
   const handleSubmit = (event) => {
@@ -123,6 +145,30 @@ function MealPlanForm() {
             Instructions:
             <textarea name="instructions" value={recipe.instructions} onChange={(e) => handleRecipeChange(index, e)} />
           </label>
+          <div className="nutrition-section">
+              <label>Calories:
+                  <input type="number" name="calories" value={recipe.nutrition.calories} onChange={(e) => handleRecipeChange(index, e)} />
+              </label>
+              <label>Protein (g):
+                  <input type="number" name="protein" value={recipe.nutrition.protein} onChange={(e) => handleRecipeChange(index, e)} />
+              </label>
+              <label>Carbs (g):
+                  <input type="number" name="carbs" value={recipe.nutrition.carbs} onChange={(e) => handleRecipeChange(index, e)} />
+              </label>
+              <label>Fat (g):
+                <input type="number" name="fat" value={recipe.nutrition.fat} onChange={(e) => handleRecipeChange(index, e)} />
+              </label>
+          </div>
+          <label>
+              Portion Size:
+              <input type="text" name="portionSize" value={recipe.portionSize} onChange={(e) => handleRecipeChange(index, e)} />
+          </label>
+                    {recipe.dietaryPreferences.map((preference, pIndex) => (
+                        <div key={pIndex}>
+                            <input type="text" value={preference} onChange={(e) => handleDietaryPreferenceChange(index, pIndex, e)} />
+                            <button type="button" onClick={() => addDietaryPreference(index)}>Add Dietary Preference</button>
+                        </div>
+                    ))}
         </div>
       ))}
       <button type="button" onClick={addRecipe}>Add Recipe</button>
