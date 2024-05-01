@@ -1,7 +1,7 @@
 
 /* middle */
 
-.middle .stories {
+.middle .storiesMP {
     display: flex;
     justify-content: space-between;
     height: 12rem;
@@ -10,7 +10,7 @@
 }
 
 
-.middle .stories .story{
+.middle .storiesMP .story{
     display: flex;
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
@@ -24,7 +24,7 @@
     position: relative;
     overflow: hidden;
 }
-.middle .stories .story::before{
+.middle .storiesMP .story::before{
     content:"";
     display: block;
     width: 100%;
@@ -35,30 +35,30 @@
 
 }
 
-.middle .stories .story .name{
+.middle .storiesMP .story .name{
     z-index: 2;
 }
 
-.middle .stories .story:nth-child(1){
-    background: url("../../images/img/story2.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(1){
+    background: url("../../images/img/meal5.png") no-repeat center/cover;
 
 }
 
-.middle .stories .story:nth-child(2){
-    background: url("../../images/img/story1.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(2){
+    background: url("../../images/img/meal2.png") no-repeat center/cover;
 
 }
 
-.middle .stories .story:nth-child(3){
-    background: url("../../images/img/story3.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(3){
+    background: url("../../images/img/meal3.png") no-repeat center/cover;
 
 }
-.middle .stories .story:nth-child(4){
-    background: url("../../images/img/story4.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(4){
+    background: url("../../images/img/meal4.png") no-repeat center/cover;
 
 }
 
-.middle .stories .story:nth-child(5){
+.middle .storiesMP .story:nth-child(5){
     background: url("../../images/img/story5.jpeg") no-repeat center/cover;
 
 }

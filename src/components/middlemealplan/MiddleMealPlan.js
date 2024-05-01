@@ -9,7 +9,6 @@ import profile3 from "../../images/profile-13.jpg";
 import {
   deleteMealPlanById,
   getAllMealPlans,
-  getAllWorkoutPlans,
 } from "../../util/APIUtils";
 import { toast } from "react-toastify";
 export default function MiddleMealPlan() {
@@ -129,7 +128,7 @@ export default function MiddleMealPlan() {
 
   return (
     <div className="middle">
-      <div className="stories">
+      <div className="storiesMP">
         <div className="story">
           <div className="profile-photo">
             <img src={profilepic} alt="" />
