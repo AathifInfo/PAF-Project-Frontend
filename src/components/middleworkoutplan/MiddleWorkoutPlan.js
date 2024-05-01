@@ -77,19 +77,19 @@ export default function MiddleWorkoutPlan({ data }) {
         </div>
         <div className="story">
           <div className="profile-photo">
-            <img src="./images/profile-15.jpg" alt="" />
+            <img src={profile1} alt="" />
           </div>
           <p className="name">Ashu</p>
         </div>
         <div className="story">
           <div className="profile-photo">
-            <img src="./images/profile-14.jpg" alt="" />
+            <img src={profile2} alt="" />
           </div>
           <p className="name">Shraddha</p>
         </div>
         <div className="story">
           <div className="profile-photo">
-            <img src="./images/profile-13.jpg" alt="" />
+            <img src={profile3} alt="" />
           </div>
           <p className="name">Ananya</p>
         </div>
