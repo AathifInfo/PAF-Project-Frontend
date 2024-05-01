@@ -1,8 +1,8 @@
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 
-const request = options => {
+const request = (options) => {
   const headers = new Headers({
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   });
 
   if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -15,8 +15,8 @@ const request = options => {
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
 
-  return fetch(options.url, options).then(response =>
-    response.json().then(json => {
+  return fetch(options.url, options).then((response) =>
+    response.json().then((json) => {
       if (!response.ok) {
         return Promise.reject(json);
       }
@@ -32,7 +32,7 @@ export function getCurrentUser() {
 
   return request({
     url: API_BASE_URL + "/api/test/all",
-    method: "GET"
+    method: "GET",
   });
 }
 
@@ -40,7 +40,7 @@ export function login(loginRequest) {
   return request({
     url: API_BASE_URL + "/api/auth/signin",
     method: "POST",
-    body: JSON.stringify(loginRequest)
+    body: JSON.stringify(loginRequest),
   });
 }
 
@@ -48,14 +48,14 @@ export function signup(signupRequest) {
   return request({
     url: API_BASE_URL + "/api/auth/signup",
     method: "POST",
-    body: JSON.stringify(signupRequest)
+    body: JSON.stringify(signupRequest),
   });
 }
 
 export function getAllWorkoutPlans() {
   return request({
     url: API_BASE_URL + "/api/workout/plan",
-    method: "GET"
+    method: "GET",
   });
 }
 
@@ -63,18 +63,23 @@ export function craeteWorkoutPlans(plans) {
   return request({
     url: API_BASE_URL + "/api/workout/plan",
     method: "POST",
-    body: JSON.stringify(plans)
+    body: JSON.stringify(plans),
   });
 }
-
 
 export function deleteWorkoutPlanById(planId) {
   return request({
     url: API_BASE_URL + "/api/workout/plan/" + planId,
-    method: "DELETE"
+    method: "DELETE",
   });
 }
 
+export function getAllMealPlans() {
+  return request({
+    url: API_BASE_URL + "/api/meal/plan",
+    method: "GET",
+  });
+}
 
 // export function disLikePost({ likeId }) {
 //   return request({
@@ -105,7 +110,6 @@ export function deleteWorkoutPlanById(planId) {
 //     body: JSON.stringify({ postId, userId })
 //   });
 // }
-
 
 // export function sharePost(post) {
 //   return request({
