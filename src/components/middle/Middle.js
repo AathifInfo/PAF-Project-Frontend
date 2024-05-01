@@ -3,27 +3,59 @@ import "./Middle.css";
 import axios from "axios";
 import profilepic from "../../images/profile-1.jpg";
 import PostService from "../../Services/PostService";
+import { uploadImage } from "../../util/APIUtils";
+import { toast } from "react-toastify";
 export default function Middle() {
   const [posts,setPosts]= useState([]);
 
-  useEffect(()=>{
-    PostService.getPosts().then((res)=>{
-      setPosts(res.data);
-    })
-  },[posts])
-
   const [file, setFile] = useState(null);
 
-  const [content, setContent] = useState('');
-
   const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState('');
 
   const [display,setDisplay] = useState("none");
 
-  const fileInputRef = useRef(null);
-  useEffect(()=>{
+  const onFileChange = event => {
+    setFile(event.target.files[0]);
+  };
 
-  },[posts])
+  const onDescriptionChange = event => {
+    setDescription(event.target.value);
+  };
+
+  const onFileUpload = () => {
+    const formData = new FormData();
+    
+    formData.append("file", file);
+    formData.append("description", description);
+
+    console.log(file);
+
+    axios.post("http://localhost:8088/api/media/upload/image", formData)
+        .then(response => {
+            console.log("File uploaded successfully", response);
+            setImageUrl(response.data.data.url); 
+            toast("You're successfully image uploaded!", {
+              type: "success",
+            });
+        })
+        .catch(error =>  {
+          console.log("Error uploading file:", error)
+          toast(
+            (error && error.message) ||
+              "Oops! Error uploading file:. Please try again!",
+            { type: "error" }
+          );
+        });
+
+  };
+
+  const fileInputRef = useRef(null);
+  // useEffect(()=>{
+
+  // },[posts])
+
+
   const handleClick = () =>{
     const fileInput = document.getElementById("file-input");
     fileInput.click();
@@ -50,24 +82,6 @@ export default function Middle() {
     setFile(null);
     fileInputRef.current.value = ""; // Reset the file input value
   };
-  const handleSubmit = (event)=>{
- 
-      event.preventDefault();
-      const formData = new FormData();
-      formData.append('content',content);
-      formData.append('file',file);
-
-
-      setImageUrl("");
-      setDisplay("none");
-      setFile(null);
-      fileInputRef.current.value = ""; // Reset the file input value
-      setContent("");
-
-    PostService.PostFormData(formData);
-     
-
-  }
 
   return (
     <div className="middle">
@@ -104,25 +118,26 @@ export default function Middle() {
         </div>
       </div>
       {/*-story ends here*/}
-      <form action="create-post" onSubmit={handleSubmit} className="create-post">
+      <form onSubmit={onFileUpload} className="create-post">
         <div className="profile-photo">
           <img src={profilepic} alt="profile-photo" />
         </div>
         <input
           type="text"
-          value={content}
+          value={description} onChange={onDescriptionChange}
+          // value={content}
           placeholder="what's on your mind Nishi?"
           id="create-post"
-          onChange={(event) => setContent(event.target.value)}
+          // onChange={(event) => setContent(event.target.value)}
         />
         <div className="attach">
-        <span><i onClick={handleClick} className="uil uil-paperclip"></i>
-        <input type="file" id="file-input" onChange={handleFileChange} ref={fileInputRef} style={{"display": "none"}}></input>
-        </span>
+          <span><i onClick={handleClick} className="uil uil-paperclip"></i>
+          <input type="file" id="file-input" onChange={handleFileChange} ref={fileInputRef} style={{"display": "none"}}></input>
+          </span>
         </div>
         
           
-        <input type="submit" onClick={handleSubmit} defaultValue="post" className="btn btn-primary" />
+        <input type="submit" defaultValue="post" className="btn btn-primary" />
        
       </form>
       <div id="preview" style={{ display }}>
@@ -130,12 +145,8 @@ export default function Middle() {
         <i className="uil uil-multiply"></i>
         </span>
         <img src={imageUrl} >
-        </img>
-
-        
-       
-        <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div>
-       
+        </img>s
+        {/* <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div> */}
       </div>
 
       {/*----------------Feeds-------------------*/}
@@ -163,7 +174,7 @@ export default function Middle() {
                 <p>{post.content}</p>
               </div>
             <div className="photo">
-              <img src={post.image} alt="" />
+              <img src={imageUrl} alt="" />
             </div>
             <div className="action-button">
               <div className="interation-buttons">

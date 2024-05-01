@@ -96,6 +96,15 @@ export function deleteMealPlanById(planId) {
   });
 }
 
+export function uploadImage(file) {
+  return request({
+    url: API_BASE_URL + "/api/media/upload/image",
+    method: "POST",
+    body: JSON.stringify(file),
+  });
+}
+
+
 // export function disLikePost({ likeId }) {
 //   return request({
 //     url: API_BASE_URL + "/posts/likes/" + likeId,

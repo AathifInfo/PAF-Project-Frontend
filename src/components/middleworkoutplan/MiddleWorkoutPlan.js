@@ -159,7 +159,7 @@ export default function MiddleWorkoutPlan() {
       </div>
       {/*-story ends here*/}
       <form
-        action="create-post"
+        // action="create-post"
         onSubmit={handleSubmit}
         className="create-post"
       >

@@ -162,7 +162,7 @@ export default function MiddleMealPlan() {
       </div>
       {/*-story ends here*/}
       <form
-        action="create-post"
+        // action="create-post"
         onSubmit={handleSubmit}
         className="create-post"
       >
@@ -239,7 +239,7 @@ export default function MiddleMealPlan() {
               </div>
               <div className="content">{post.description}</div>
               <div className="photo">
-                {/* <img src={post.image} alt="" /> */}
+                {/* <img src={profile2} alt="" /> */}
               </div>
               <div
                 className="caption"

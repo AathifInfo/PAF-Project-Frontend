@@ -15,9 +15,9 @@ export default function Header({ authenticated, onLogout }) {
           />
         </div>
         <div className="create">
-          <label className="btn btn-primary" htmlFor="create-post">
+          {/* <label className="btn btn-primary" htmlFor="create-post">
             Create
-          </label>
+          </label> */}
           <div className="profile-photo">
             <img src={profileImage} alt="profile1" />
           </div>

@@ -134,10 +134,6 @@ export default function Left() {
           </span>
           <h3>Settings</h3>
         </a>
-        {/*End Of Sidebar*/}
-        <label htmlFor="create-post" className="btn btn-primary">
-          Create Post
-        </label>
       </div>
     </div>
   );
