@@ -10,32 +10,32 @@ import { getAllWorkoutPlans } from "../../util/APIUtils";
 import WorkoutPlanForm from "../right-workout-plan-form/WorkoutPlanForm";
 
 export default function WorkourPlanPage({ authenticated, onLogout }) {
-  const [workoutPlans, setWorkoutPlans] = useState([]);
+  // const [workoutPlans, setWorkoutPlans] = useState([]);
 
-  const fetchAllPost = async () => {
-    try {
-      const response = await getAllWorkoutPlans();
-      setWorkoutPlans(response.data);
-      console.log("fecthed success")
-      console.log(response.data)
-      console.log(workoutPlans) 
-    } catch (error) {
-      console.log("fecthed failed")
-      console.log(error)
-      toast("Oops something went wrong!", { type: "error",position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark", });
-    }
-  };
+  // const fetchAllPost = async () => {
+  //   try {
+  //     const response = await getAllWorkoutPlans();
+  //     setWorkoutPlans(response.data);
+  //     console.log("fecthed success")
+  //     console.log(response.data)
+  //     console.log(workoutPlans) 
+  //   } catch (error) {
+  //     console.log("fecthed failed")
+  //     console.log(error)
+  //     toast("Oops something went wrong!", { type: "error",position: "bottom-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "dark", });
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchAllPost();
-  }, []);
+  // useEffect(() => {
+  //   fetchAllPost();
+  // }, []);
 
   return (
     <div>
@@ -43,7 +43,7 @@ export default function WorkourPlanPage({ authenticated, onLogout }) {
       <main>
         <div className="container">
           <Left />
-          <MiddleWorkoutPlan data={workoutPlans}/>
+          <MiddleWorkoutPlan/>
           <WorkoutPlanForm />
         </div>
       </main>

@@ -6,7 +6,39 @@ import PostService from "../../Services/PostService";
 import profile1 from "../../images/profile-11.jpg";
 import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
-export default function MiddleWorkoutPlan({ data }) {
+import { deleteWorkoutPlanById, getAllWorkoutPlans } from "../../util/APIUtils";
+import { toast } from "react-toastify";
+export default function MiddleWorkoutPlan() {
+  const [workoutPlans, setWorkoutPlans] = useState([]);
+
+  const fetchAllPost = async () => {
+    try {
+      const response = await getAllWorkoutPlans();
+      setWorkoutPlans(response.data);
+      console.log("fecthed success");
+      console.log(response.data);
+      console.log(workoutPlans);
+    } catch (error) {
+      console.log("fecthed failed");
+      console.log(error);
+      toast("Oops something went wrong!", {
+        type: "error",
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchAllPost();
+  }, []);
+
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -64,6 +96,31 @@ export default function MiddleWorkoutPlan({ data }) {
     setContent("");
 
     PostService.PostFormData(formData);
+  };
+
+  const handleDelete = (planId) => {
+    // preventDefault();
+
+    deleteWorkoutPlanById(planId)
+      .then((response) => {
+        console.log(planId)
+        console.log("Delete workout plan success!", response);
+        toast("Workout plan deleted successfully!", { type: "success" });
+        refreshComponent();
+      })
+      .catch((error) => {
+        console.error("Delete workout plan failed:", error);
+        toast(
+          error && error.message
+            ? error.message
+            : "Oops! Something went wrong. Please try again!",
+          { type: "error" }
+        );
+      });
+  };
+
+  const refreshComponent = () => {
+    fetchAllPost();
   };
 
   return (
@@ -153,7 +210,7 @@ export default function MiddleWorkoutPlan({ data }) {
       {/*----------------Feeds-------------------*/}
 
       <div className="feeds">
-        {data.map((post) => {
+        {workoutPlans.map((post) => {
           return (
             <div className="feed">
               <div className="head">
@@ -166,7 +223,13 @@ export default function MiddleWorkoutPlan({ data }) {
                     <small>{post.createdDate}</small>
                   </div>
                 </div>
-
+                <span
+                  className="edit"
+                  onClick={() => handleDelete(post.planId)}
+                  title="Delete Workout Plan"
+                >
+                  <i className="uil uil-trash-alt"></i>
+                </span>
                 <span className="edit">
                   <i className="uil uil-ellipsis-h" />
                 </span>

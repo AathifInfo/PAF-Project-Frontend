@@ -67,6 +67,22 @@ export function craeteWorkoutPlans(plans) {
   });
 }
 
+
+export function deleteWorkoutPlanById(planId) {
+  return request({
+    url: API_BASE_URL + "/api/workout/plan/" + planId,
+    method: "DELETE"
+  });
+}
+
+
+// export function disLikePost({ likeId }) {
+//   return request({
+//     url: API_BASE_URL + "/posts/likes/" + likeId,
+//     method: "DELETE"
+//   });
+// }
+
 // export function getAllUsers() {
 //   return request({
 //     url: API_BASE_URL + "/user/all",
@@ -90,12 +106,6 @@ export function craeteWorkoutPlans(plans) {
 //   });
 // }
 
-// export function disLikePost({ likeId }) {
-//   return request({
-//     url: API_BASE_URL + "/posts/likes/" + likeId,
-//     method: "DELETE"
-//   });
-// }
 
 // export function sharePost(post) {
 //   return request({
