@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+import { craeteWorkoutPlans } from "../../util/APIUtils";
 import "./WorkoutPlanForm.css";
 import React, { useState } from "react";
 
@@ -39,6 +41,29 @@ function WorkoutPlanForm() {
     setWorkoutPlan({ ...workoutPlan, routineDTOS: updatedRoutines });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const workoutPlanRequest = Object.assign({}, workoutPlan);
+
+    craeteWorkoutPlans(workoutPlanRequest)
+      .then((response) => {
+        console.log("Save workout plan success!")
+        console.log(response)
+        toast("You're successfully registered. Please login to continue!", {
+          type: "success",
+        });
+      })
+      .catch((error) => {
+        toast(
+          console.log("Save workout plan failed!: "+error)
+          (error && error.message) ||
+            "Oops! Something went wrong. Please try again!",
+          { type: "error" }
+        );
+      });
+  };
+
   const addRoutine = () => {
     setWorkoutPlan({
       ...workoutPlan,
@@ -66,7 +91,8 @@ function WorkoutPlanForm() {
   };
 
   const submitForm = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
+    handleSubmit(e);
     console.log(workoutPlan);
     // Here you would typically handle the submission to the backend
   };
