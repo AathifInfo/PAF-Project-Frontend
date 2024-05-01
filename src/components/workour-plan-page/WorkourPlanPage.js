@@ -7,6 +7,7 @@ import "./WorkourPlanPage.css";
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllWorkoutPlans } from "../../util/APIUtils";
+import WorkoutPlanForm from "../right-workout-plan-form/WorkoutPlanForm";
 
 export default function WorkourPlanPage({ authenticated, onLogout }) {
   const [workoutPlans, setWorkoutPlans] = useState([]);
@@ -43,6 +44,7 @@ export default function WorkourPlanPage({ authenticated, onLogout }) {
         <div className="container">
           <Left />
           <MiddleWorkoutPlan data={workoutPlans}/>
+          <WorkoutPlanForm />
         </div>
       </main>
     </div>

@@ -12,6 +12,7 @@ export default function MealPlanPage ({ authenticated, onLogout }) {
        <div className='container'>
           <Left />
           <Middle />
+          
        </div>
     </main>
     </div>
