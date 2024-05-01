@@ -1,20 +1,50 @@
-import React from 'react'
-import Middle from '../middle/Middle';
-import Left from '../left/Left';
-import Right from '../right/Right';
-import Header from '../header/Header';
+import React, { useEffect, useState } from "react";
+import Middle from "../middle/Middle";
+import Left from "../left/Left";
+import Right from "../right/Right";
+import Header from "../header/Header";
 import "./WorkourPlanPage.css";
-export default function WorkourPlanPage ({ authenticated, onLogout }) {
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllWorkoutPlans } from "../../util/APIUtils";
+
+export default function WorkourPlanPage({ authenticated, onLogout }) {
+  const [workoutPlans, setWorkoutPlans] = useState([]);
+
+  const fetchAllPost = async () => {
+    try {
+      const response = await getAllWorkoutPlans();
+      setWorkoutPlans(response.data);
+      console.log("fecthed success")
+      console.log(response.data)
+      console.log(workoutPlans) 
+    } catch (error) {
+      console.log("fecthed failed")
+      console.log(error)
+      toast("Oops something went wrong!", { type: "error",position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark", });
+    }
+  };
+
+  useEffect(() => {
+    fetchAllPost();
+  }, []);
+
   return (
     <div>
-        <Header authenticated={authenticated} onLogout={onLogout} />
-    <main>
-       <div className='container'>
+      <Header authenticated={authenticated} onLogout={onLogout} />
+      <main>
+        <div className="container">
           <Left />
-          <Middle />
-       </div>
-    </main>
+          <Middle data={workoutPlans}/>
+        </div>
+      </main>
     </div>
-    
-  )
+  );
 }

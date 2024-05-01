@@ -47,9 +47,10 @@ function LogIn2({ authenticated }) {
 
     login(loginRequest)
       .then((response) => {
-        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+        localStorage.setItem(ACCESS_TOKEN, response.token);
         toast("You're successfully logged in!", { type: "success" });
         console.log("login succuess!");
+        console.log(response.token);
         navigate("/");
       })
       .catch((error) => {

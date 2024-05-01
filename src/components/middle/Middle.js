@@ -3,7 +3,10 @@ import "./Middle.css";
 import axios from "axios";
 import profilepic from "../../images/profile-1.jpg";
 import PostService from "../../Services/PostService";
-export default function Middle() {
+import profile1 from "../../images/profile-11.jpg";
+import profile2 from "../../images/profile-12.jpg";
+import profile3 from "../../images/profile-13.jpg";
+export default function Middle({ data }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -150,7 +153,7 @@ export default function Middle() {
       {/*----------------Feeds-------------------*/}
 
       <div className="feeds">
-        {posts.map((post) => {
+        {data.map((post) => {
           return (
             <div className="feed">
               <div className="head">
@@ -159,8 +162,8 @@ export default function Middle() {
                     <img src={profilepic} alt="profile-photo" />
                   </div>
                   <div className="info">
-                    <h3>Lana Rose</h3>
-                    <small>Dubai, 15 Minutes Ago</small>
+                    <h3>{post.name}</h3>
+                    <small>{post.createdDate}</small>
                   </div>
                 </div>
 
@@ -168,12 +171,73 @@ export default function Middle() {
                   <i className="uil uil-ellipsis-h" />
                 </span>
               </div>
-              <div className="content">
-                <p>{post.content}</p>
-              </div>
+              <div className="content">{post.description}</div>
               <div className="photo">
-                <img src={post.image} alt="" />
+                {/* <img src={post.image} alt="" /> */}
               </div>
+              <div
+                className="caption"
+                style={{
+                  backgroundColor: "#f8f9fa",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                }}
+              >
+                <h6
+                  style={{
+                    borderBottom: "2px solid #007bff",
+                    paddingBottom: "10px",
+                    marginBottom: "10px",
+                    color: "#007bff",
+                  }}
+                >
+                  <b>Routing plans:</b>
+                </h6>
+                {post.routineDTOS.map((routine) => (
+                  <div key={routine.routineId} style={{ marginBottom: "10px" }}>
+                    <h6
+                      style={{
+                        color: "#333",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginBottom: "5px",
+                      }}
+                    >
+                      {routine.name}
+                    </h6>
+                    <ul style={{ listStyleType: "none", paddingLeft: "20px" }}>
+                      {routine.exerciseDTOS.map((exercise) => (
+                        <li
+                          key={exercise.exerciseId}
+                          style={{
+                            marginBottom: "10px",
+                            padding: "5px",
+                            borderRadius: "5px",
+                            backgroundColor: "#fff",
+                            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                          }}
+                        >
+                          <span style={{ fontWeight: "bold" }}>
+                            {exercise.name}
+                          </span>
+                          <ul
+                            style={{
+                              listStyleType: "square",
+                              marginLeft: "20px",
+                              color: "#555",
+                            }}
+                          >
+                            <li>Sets: {exercise.sets}</li>
+                            <li>Repetitions: {exercise.repetitions}</li>
+                          </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
               <div className="action-button">
                 <div className="interation-buttons">
                   <span>
@@ -194,13 +258,13 @@ export default function Middle() {
               </div>
               <div className="liked-by">
                 <span>
-                  <img src="./images/profile-11.jpg" />
+                  <img src={profile1} />
                 </span>
                 <span>
-                  <img src="./images/profile-11.jpg" />
+                  <img src={profile2} />
                 </span>
                 <span>
-                  <img src="./images/profile-11.jpg" />
+                  <img src={profile3} />
                 </span>
                 <p>
                   Liked by <b>Earnest Achiever</b> and 323 others.
