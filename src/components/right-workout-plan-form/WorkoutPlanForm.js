@@ -50,7 +50,7 @@ function WorkoutPlanForm() {
       .then((response) => {
         console.log("Save workout plan success!")
         console.log(response)
-        toast("You're successfully registered. Please login to continue!", {
+        toast("Workout plan created successfully", {
           type: "success",
         });
       })
