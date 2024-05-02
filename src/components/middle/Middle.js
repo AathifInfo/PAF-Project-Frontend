@@ -25,6 +25,10 @@ export default function Middle() {
     setDescription(event.target.value);
   };
 
+  useEffect(() => {
+    fetchAllImage();
+  }, []);
+
   const onFileUpload = () => {
     const formData = new FormData();
     
@@ -40,6 +44,7 @@ export default function Middle() {
             toast("You're successfully image uploaded!", {
               type: "success",
             });
+            // refreshComponent();
         })
         .catch(error =>  {
           console.log("Error uploading file:", error)
@@ -85,13 +90,37 @@ export default function Middle() {
     fileInputRef.current.value = ""; // Reset the file input value
   };
 
-  useEffect(() => {
+  const fetchAllImage = async () => {
     axios.get('http://localhost:8088/api/media/all')
-        .then(response => {
-            setMediaItems(response.data);
-        })
-        .catch(error => console.error('Error fetching media:', error));
-  }, []);
+    .then(response => {
+        setMediaItems(response.data);
+    })
+    .catch(error => console.error('Error fetching media:', error));
+  }
+
+  const handleDelete = (planId) => {
+    axios.delete("http://localhost:8088/api/media/delete/media/"+planId)
+    .then(response => {
+        console.log("File delete successfully", response);
+        setImageUrl(response.data.data.url); 
+        toast("You're successfully image deleted!", {
+          type: "success",
+        });
+        refreshComponent();
+    })
+    .catch(error =>  {
+      console.log("Error deleting file:", error)
+      toast(
+        (error && error.message) ||
+          "Oops! Error deleting file:. Please try again!",
+        { type: "error" }
+      );
+    });
+  }
+
+  const refreshComponent = () => {
+    fetchAllImage();
+  };
 
   return (
     <div className="middle">
@@ -175,7 +204,13 @@ export default function Middle() {
                   <small>Dubai, 15 Minutes Ago</small>
                 </div>
               </div>
-              
+              <span
+                  className="edit"
+                  onClick={() => handleDelete(post.id)}
+                  title="Delete Meal Plan"
+                >
+                  <i className="uil uil-trash-alt"></i>
+              </span>
               <span className="edit">
                 <i className="uil uil-ellipsis-h" />
               </span>

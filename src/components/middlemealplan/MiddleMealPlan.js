@@ -121,10 +121,10 @@ export default function MiddleMealPlan() {
         );
       });
   };
-
   const refreshComponent = () => {
     fetchAllPost();
   };
+  
 
   return (
     <div className="middle">
