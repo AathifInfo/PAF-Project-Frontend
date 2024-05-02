@@ -15,6 +15,8 @@ export default function Middle() {
 
   const [display,setDisplay] = useState("none");
 
+  const [mediaItems, setMediaItems] = useState([]);
+
   const onFileChange = event => {
     setFile(event.target.files[0]);
   };
@@ -82,6 +84,14 @@ export default function Middle() {
     setFile(null);
     fileInputRef.current.value = ""; // Reset the file input value
   };
+
+  useEffect(() => {
+    axios.get('http://localhost:8088/api/media/all')
+        .then(response => {
+            setMediaItems(response.data);
+        })
+        .catch(error => console.error('Error fetching media:', error));
+  }, []);
 
   return (
     <div className="middle">
@@ -152,9 +162,9 @@ export default function Middle() {
       {/*----------------Feeds-------------------*/}
      
       <div className="feeds">
-      {posts.map((post)=>{
+      {mediaItems.map((post)=>{
           return(
-            <div className="feed">
+            <div className="feed" key={post.id}>
             <div className="head">
               <div className="user">
                 <div className="profile-photo">
@@ -171,10 +181,10 @@ export default function Middle() {
               </span>
             </div>
               <div className="content">
-                <p>{post.content}</p>
+                <p>{post.description}</p>
               </div>
             <div className="photo">
-              <img src={imageUrl} alt="" />
+              <img src={post.data} alt="" />
             </div>
             <div className="action-button">
               <div className="interation-buttons">
