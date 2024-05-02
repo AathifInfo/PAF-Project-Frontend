@@ -145,7 +145,7 @@ export default function Middle() {
         <i className="uil uil-multiply"></i>
         </span>
         <img src={imageUrl} >
-        </img>s
+        </img>
         {/* <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div> */}
       </div>
 
