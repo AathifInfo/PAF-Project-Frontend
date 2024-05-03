@@ -9,6 +9,7 @@ import profile3 from "../../images/profile-13.jpg";
 import { deleteWorkoutPlanById, getAllWorkoutPlans } from "../../util/APIUtils";
 import { toast } from "react-toastify";
 import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+import UpdateWorkoutPlanModal from "../updateWorkoutPlanModal/UpdateWorkoutPlanModal";
 
 
 export default function MiddleWorkoutPlan() {
@@ -16,6 +17,13 @@ export default function MiddleWorkoutPlan() {
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedMealPlan, setSelectedMealPlan] = useState(null);
+
+  const handleUpdateClick = (mealPlan) => {
+    setSelectedMealPlan(mealPlan);
+    setShowUpdateModal(true);
+  };
 
   const fetchAllPost = async () => {
     try {
@@ -242,6 +250,13 @@ export default function MiddleWorkoutPlan() {
                 <span className="edit">
                   <i className="uil uil-ellipsis-h" />
                 </span>
+                <span
+                  className="edit"
+                  onClick={() => handleUpdateClick(post)}
+                  title="Update Meal Plan"
+                >
+                  <i className="uil uil-edit"></i>
+                </span>
               </div>
               <div className="content">{post.description}</div>
               <div className="photo">
@@ -352,6 +367,17 @@ export default function MiddleWorkoutPlan() {
             </div>
           );
         })}
+        {showUpdateModal && selectedMealPlan && (
+          <UpdateWorkoutPlanModal
+            workoutPlan={selectedMealPlan}
+            onSave={(updatedMealPlan) => {
+              console.log("Updated Meal Plan:", updatedMealPlan);
+              // API call to save updated data
+              setShowUpdateModal(false);
+            }}
+            onClose={() => setShowUpdateModal(false)}
+          />
+        )}
       </div>
     </div>
   );

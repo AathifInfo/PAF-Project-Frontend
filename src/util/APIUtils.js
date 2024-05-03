@@ -112,6 +112,14 @@ export function updateMealPlans(plans) {
   });
 }
 
+export function updateWorkoutPlans(plans) {
+  return request({
+    url: API_BASE_URL + "/api/workout/plan",
+    method: "PUT",
+    body: JSON.stringify(plans),
+  });
+}
+
 
 // export function disLikePost({ likeId }) {
 //   return request({
