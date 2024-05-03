@@ -1,5 +1,5 @@
 import React from 'react'
-import Middle from '../middle/Middle';
+import Middle from '../middle/MiddleWorkoutPlan';
 import Left from '../left/Left';
 import Right from '../right/Right';
 import Header from '../header/Header';

@@ -3,8 +3,8 @@ import Middle from '../middle/Middle';
 import Left from '../left/Left';
 import Right from '../right/Right';
 import Header from '../header/Header';
-import "./MainPage.css";
-export default function ({ authenticated, onLogout }) {
+import "./WorkourStatusPage.css";
+export default function WorkourStatusPage ({ authenticated, onLogout }) {
   return (
     <div>
         <Header authenticated={authenticated} onLogout={onLogout} />
@@ -12,7 +12,6 @@ export default function ({ authenticated, onLogout }) {
        <div className='container'>
           <Left />
           <Middle />
-          <Right />
        </div>
     </main>
     </div>

@@ -1,7 +1,7 @@
 
 /* middle */
 
-.middle .stories {
+.middle .storiesMP {
     display: flex;
     justify-content: space-between;
     height: 12rem;
@@ -10,7 +10,7 @@
 }
 
 
-.middle .stories .story{
+.middle .storiesMP .story{
     display: flex;
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
@@ -24,7 +24,7 @@
     position: relative;
     overflow: hidden;
 }
-.middle .stories .story::before{
+.middle .storiesMP .story::before{
     content:"";
     display: block;
     width: 100%;
@@ -35,30 +35,31 @@
 
 }
 
-.middle .stories .story .name{
+.middle .storiesMP .story .name{
     z-index: 2;
 }
 
-.middle .stories .story:nth-child(1){
-    background: url("../../images/img/status1.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(1){
+    background: url("../../images/img/meal5.png") no-repeat center/cover;
 
 }
 
-.middle .stories .story:nth-child(2){
-    background: url("../../images/img/status2.png") no-repeat center/cover;
-}
-
-.middle .stories .story:nth-child(3){
-    background: url("../../images/img/status3.png") no-repeat center/cover;
-
-}
-.middle .stories .story:nth-child(4){
-    background: url("../../images/img/status4.png") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(2){
+    background: url("../../images/img/meal2.png") no-repeat center/cover;
 
 }
 
-.middle .stories .story:nth-child(5){
-    background: url("../../images/img/status5.avif") no-repeat center/cover;
+.middle .storiesMP .story:nth-child(3){
+    background: url("../../images/img/meal3.png") no-repeat center/cover;
+
+}
+.middle .storiesMP .story:nth-child(4){
+    background: url("../../images/img/meal4.png") no-repeat center/cover;
+
+}
+
+.middle .storiesMP .story:nth-child(5){
+    background: url("../../images/img/meal7.jpg") no-repeat center/cover;
 
 }
 
@@ -211,6 +212,75 @@
 .middle .feed .liked-by p{
     margin-left: 0.5rem;
 }
+
+.recipe-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.recipe-title {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.recipe-details {
+    margin-top: 10px;
+}
+
+.ingredients-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ingredient-item {
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.instructions {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.nutrition-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.dietary-preferences {
+    margin-top: 10px;
+}
+
+.dietary-tag {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 3px 8px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 0.85em;
+}
+
 
 /* Media queries for small laptops and big tabs*/
 @media screen and (max-width:1200px) {

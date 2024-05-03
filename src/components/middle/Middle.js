@@ -3,27 +3,66 @@ import "./Middle.css";
 import axios from "axios";
 import profilepic from "../../images/profile-1.jpg";
 import PostService from "../../Services/PostService";
+import { uploadImage } from "../../util/APIUtils";
+import { toast } from "react-toastify";
 export default function Middle() {
   const [posts,setPosts]= useState([]);
 
-  useEffect(()=>{
-    PostService.getPosts().then((res)=>{
-      setPosts(res.data);
-    })
-  },[posts])
-
   const [file, setFile] = useState(null);
 
-  const [content, setContent] = useState('');
-
   const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState('');
 
   const [display,setDisplay] = useState("none");
 
-  const fileInputRef = useRef(null);
-  useEffect(()=>{
+  const [mediaItems, setMediaItems] = useState([]);
 
-  },[posts])
+  const onFileChange = event => {
+    setFile(event.target.files[0]);
+  };
+
+  const onDescriptionChange = event => {
+    setDescription(event.target.value);
+  };
+
+  useEffect(() => {
+    fetchAllImage();
+  }, []);
+
+  const onFileUpload = () => {
+    const formData = new FormData();
+    
+    formData.append("file", file);
+    formData.append("description", description);
+
+    console.log(file);
+
+    axios.post("http://localhost:8088/api/media/upload/image", formData)
+        .then(response => {
+            console.log("File uploaded successfully", response);
+            setImageUrl(response.data.data.url); 
+            toast("You're successfully image uploaded!", {
+              type: "success",
+            });
+            // refreshComponent();
+        })
+        .catch(error =>  {
+          console.log("Error uploading file:", error)
+          toast(
+            (error && error.message) ||
+              "Oops! Error uploading file:. Please try again!",
+            { type: "error" }
+          );
+        });
+
+  };
+
+  const fileInputRef = useRef(null);
+  // useEffect(()=>{
+
+  // },[posts])
+
+
   const handleClick = () =>{
     const fileInput = document.getElementById("file-input");
     fileInput.click();
@@ -50,24 +89,38 @@ export default function Middle() {
     setFile(null);
     fileInputRef.current.value = ""; // Reset the file input value
   };
-  const handleSubmit = (event)=>{
- 
-      event.preventDefault();
-      const formData = new FormData();
-      formData.append('content',content);
-      formData.append('file',file);
 
-
-      setImageUrl("");
-      setDisplay("none");
-      setFile(null);
-      fileInputRef.current.value = ""; // Reset the file input value
-      setContent("");
-
-    PostService.PostFormData(formData);
-     
-
+  const fetchAllImage = async () => {
+    axios.get('http://localhost:8088/api/media/all')
+    .then(response => {
+        setMediaItems(response.data);
+    })
+    .catch(error => console.error('Error fetching media:', error));
   }
+
+  const handleDelete = (planId) => {
+    axios.delete("http://localhost:8088/api/media/delete/media/"+planId)
+    .then(response => {
+        console.log("File delete successfully", response);
+        setImageUrl(response.data.data.url); 
+        toast("You're successfully image deleted!", {
+          type: "success",
+        });
+        refreshComponent();
+    })
+    .catch(error =>  {
+      console.log("Error deleting file:", error)
+      toast(
+        (error && error.message) ||
+          "Oops! Error deleting file:. Please try again!",
+        { type: "error" }
+      );
+    });
+  }
+
+  const refreshComponent = () => {
+    fetchAllImage();
+  };
 
   return (
     <div className="middle">
@@ -104,25 +157,26 @@ export default function Middle() {
         </div>
       </div>
       {/*-story ends here*/}
-      <form action="create-post" onSubmit={handleSubmit} className="create-post">
+      <form onSubmit={onFileUpload} className="create-post">
         <div className="profile-photo">
           <img src={profilepic} alt="profile-photo" />
         </div>
         <input
           type="text"
-          value={content}
+          value={description} onChange={onDescriptionChange}
+          // value={content}
           placeholder="what's on your mind Nishi?"
           id="create-post"
-          onChange={(event) => setContent(event.target.value)}
+          // onChange={(event) => setContent(event.target.value)}
         />
         <div className="attach">
-        <span><i onClick={handleClick} className="uil uil-paperclip"></i>
-        <input type="file" id="file-input" onChange={handleFileChange} ref={fileInputRef} style={{"display": "none"}}></input>
-        </span>
+          <span><i onClick={handleClick} className="uil uil-paperclip"></i>
+          <input type="file" id="file-input" onChange={handleFileChange} ref={fileInputRef} style={{"display": "none"}}></input>
+          </span>
         </div>
         
           
-        <input type="submit" onClick={handleSubmit} defaultValue="post" className="btn btn-primary" />
+        <input type="submit" defaultValue="post" className="btn btn-primary" />
        
       </form>
       <div id="preview" style={{ display }}>
@@ -131,19 +185,15 @@ export default function Middle() {
         </span>
         <img src={imageUrl} >
         </img>
-
-        
-       
-        <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div>
-       
+        {/* <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div> */}
       </div>
 
       {/*----------------Feeds-------------------*/}
      
       <div className="feeds">
-      {posts.map((post)=>{
+      {mediaItems.map((post)=>{
           return(
-            <div className="feed">
+            <div className="feed" key={post.id}>
             <div className="head">
               <div className="user">
                 <div className="profile-photo">
@@ -154,16 +204,22 @@ export default function Middle() {
                   <small>Dubai, 15 Minutes Ago</small>
                 </div>
               </div>
-              
+              <span
+                  className="edit"
+                  onClick={() => handleDelete(post.id)}
+                  title="Delete Meal Plan"
+                >
+                  <i className="uil uil-trash-alt"></i>
+              </span>
               <span className="edit">
                 <i className="uil uil-ellipsis-h" />
               </span>
             </div>
               <div className="content">
-                <p>{post.content}</p>
+                <p>{post.description}</p>
               </div>
             <div className="photo">
-              <img src={post.image} alt="" />
+              <img src={post.data} alt="" />
             </div>
             <div className="action-button">
               <div className="interation-buttons">
