@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 
 import profileImage from "../../images/profile-1.jpg";
-export default function Header({ authenticated, onLogout }) {
+export default function Header({ authenticated, onLogout, currentUser }) {
   return (
     <nav>
       <div className="container">

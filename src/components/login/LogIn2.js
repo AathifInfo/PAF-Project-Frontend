@@ -47,6 +47,7 @@ function LogIn2({ authenticated }) {
 
     login(loginRequest)
       .then((response) => {
+        console.log("auth is: "+authenticated)
         localStorage.setItem(ACCESS_TOKEN, response.token);
         localStorage.setItem(USER_NAME, response.username)
         localStorage.setItem(USER_EMAIL, response.email)

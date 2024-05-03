@@ -10,16 +10,12 @@ import MainPage from "./components/main-page/MainPage";
 import SignUp from "./components/signup/SignUp2";
 import LogIn from "./components/login/LogIn2";
 import Left from "./components/left/Left";
-import {
-  BrowserRouter as Router,
-  Routes as Switch,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
 
 import NotFound from "./common/NotFound";
 import LoadingIndicator from "./common/LoadingIndicator";
-import { getCurrentUser } from "./util/APIUtils";
+import { getCurrentUser, login } from "./util/APIUtils";
 import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "./constants";
 import PrivateRoute from "./common/PrivateRoute";
 
@@ -27,6 +23,8 @@ import { ToastContainer, toast } from "react-toastify";
 import WorkourPlanPage from "./components/workour-plan-page/WorkourPlanPage";
 import WorkourStatusPage from "./components/workour-status-page/WorkourStatusPage";
 import MealPlanPage from "./components/meal-plan-page/MealPlanPage";
+import LogIn2 from "./components/login/LogIn2";
+import SignUp2 from "./components/signup/SignUp2";
 
 function App() {
   // const navigate = useNavigate();
@@ -35,22 +33,25 @@ function App() {
       return { ...prevState, ...newState };
     },
     {
-      authenticated: true,
+      authenticated: false,
       currentUser: null,
       loading: true,
     }
   );
 
   const loadCurrentlyLoggedInUser = () => {
+    console.log("load current user")
     getCurrentUser()
       .then((response) => {
         setState({
-          currentUser: response,
-          authenticated: false,
+          currentUser: response.name,
+          authenticated: true,
           loading: false,
         });
+        console.log("load current auth: "+state.authenticated)
       })
       .catch((error) => {
+        console.log("load current user error!")
         setState({
           loading: false,
         });
@@ -66,6 +67,7 @@ function App() {
       authenticated: false,
       currentUser: null,
     });
+    console.log("Log out auth: "+state.authenticated)
     toast("You're safely logged out!", {
       type: "success",
       position: "bottom-right",
@@ -99,10 +101,9 @@ function App() {
         </Switch>
       </Router> */}
 
-      <Router>
-        <Switch>
+      <Routes>
           <Route
-            path="/home"
+            path="/"
             element={
               <PrivateRoute
                 authenticated={state.authenticated}
@@ -118,6 +119,7 @@ function App() {
               <PrivateRoute
                 authenticated={state.authenticated}
                 currentUser={state.currentUser}
+                onLogout={handleLogout}
                 component={WorkourPlanPage}
               />
             }
@@ -128,6 +130,7 @@ function App() {
               <PrivateRoute
                 authenticated={state.authenticated}
                 currentUser={state.currentUser}
+                onLogout={handleLogout}
                 component={WorkourStatusPage}
               />
             }
@@ -138,19 +141,20 @@ function App() {
               <PrivateRoute
                 authenticated={state.authenticated}
                 currentUser={state.currentUser}
+                onLogout={handleLogout}
                 component={MealPlanPage}
               />
             }
           />
           <Route
             path="/login"
-            element={<LogIn authenticated={state.authenticated} />}
+            element={<LogIn2 authenticated={state.authenticated} />}
           />
           <Route
             path="/signup"
-            element={<SignUp authenticated={state.authenticated} />}
+            element={<SignUp2 authenticated={state.authenticated} />}
           />
-          <Route
+          {/* <Route
             path="/"
             element={
               <MainPage
@@ -158,9 +162,8 @@ function App() {
                 onLogout={handleLogout}
               />
             }
-          />
-        </Switch>
-      </Router>
+          /> */}
+      </Routes>
       <ToastContainer />
     </div>
   );

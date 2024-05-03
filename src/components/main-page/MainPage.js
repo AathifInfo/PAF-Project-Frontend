@@ -4,10 +4,10 @@ import Left from '../left/Left';
 import Right from '../right/Right';
 import Header from '../header/Header';
 import "./MainPage.css";
-export default function ({ authenticated, onLogout }) {
+export default function ({ authenticated, onLogout, currentUser }) {
   return (
     <div>
-        <Header authenticated={authenticated} onLogout={onLogout} />
+        <Header authenticated={authenticated} onLogout={onLogout} currentUser={currentUser} />
     <main>
        <div className='container'>
           <Left />
