@@ -8,8 +8,14 @@ import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
 import { deleteWorkoutPlanById, getAllWorkoutPlans } from "../../util/APIUtils";
 import { toast } from "react-toastify";
+import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+
+
 export default function MiddleWorkoutPlan() {
   const [workoutPlans, setWorkoutPlans] = useState([]);
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
   const fetchAllPost = async () => {
     try {
@@ -36,6 +42,9 @@ export default function MiddleWorkoutPlan() {
   };
 
   useEffect(() => {
+    setToken(localStorage.getItem(ACCESS_TOKEN))
+    setUsername(localStorage.getItem(USER_NAME))
+    setEmail(localStorage.getItem(USER_EMAIL))
     fetchAllPost();
   }, []);
 
@@ -220,7 +229,7 @@ export default function MiddleWorkoutPlan() {
                   </div>
                   <div className="info">
                     <h3>{post.name}</h3>
-                    <small>{post.createdDate}</small>
+                    <small>{username} | {post.createdDate}</small>
                   </div>
                 </div>
                 <span

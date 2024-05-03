@@ -12,7 +12,7 @@ import {
 import backImage1 from "./../../images/img/bg1.png";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
-import { ACCESS_TOKEN, GOOGLE_AUTH_URL } from "../../constants";
+import { ACCESS_TOKEN, GOOGLE_AUTH_URL, USER_EMAIL, USER_NAME } from "../../constants";
 import { login } from "../../util/APIUtils";
 
 import { toast } from "react-toastify";
@@ -48,6 +48,8 @@ function LogIn2({ authenticated }) {
     login(loginRequest)
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.token);
+        localStorage.setItem(USER_NAME, response.username)
+        localStorage.setItem(USER_EMAIL, response.email)
         toast("You're successfully logged in!", { type: "success" });
         console.log("login succuess!");
         console.log(response.token);
@@ -152,7 +154,7 @@ function LogIn2({ authenticated }) {
                 Login
               </MDBBtn>
               <p className="small fw-bold mt-2 pt-1 mb-2">
-                Don't have an account? <Link to="/signup">Login!</Link>
+                Don't have an account? <Link to="/signup">Sign Up!</Link>
               </p>
             </div>
           </form>
