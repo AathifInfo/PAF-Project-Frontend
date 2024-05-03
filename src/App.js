@@ -33,7 +33,7 @@ function App() {
       return { ...prevState, ...newState };
     },
     {
-      authenticated: false,
+      authenticated: true,
       currentUser: null,
       loading: true,
     }
