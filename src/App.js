@@ -20,7 +20,7 @@ import {
 import NotFound from "./common/NotFound";
 import LoadingIndicator from "./common/LoadingIndicator";
 import { getCurrentUser } from "./util/APIUtils";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "./constants";
 import PrivateRoute from "./common/PrivateRoute";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -58,7 +58,10 @@ function App() {
   };
 
   const handleLogout = () => {
+    console.log("App component handle logout is triggered")
     localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USER_EMAIL);
+    localStorage.removeItem(USER_NAME);
     setState({
       authenticated: false,
       currentUser: null,
@@ -104,6 +107,7 @@ function App() {
               <PrivateRoute
                 authenticated={state.authenticated}
                 currentUser={state.currentUser}
+                onLogout={handleLogout}
                 component={MainPage}
               />
             }

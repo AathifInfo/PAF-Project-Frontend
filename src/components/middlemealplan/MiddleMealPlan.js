@@ -11,8 +11,13 @@ import {
   getAllMealPlans,
 } from "../../util/APIUtils";
 import { toast } from "react-toastify";
+import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+
 export default function MiddleMealPlan() {
   const [mealPlans, setMealtPlans] = useState([]);
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
   const fetchAllPost = async () => {
     try {
@@ -39,16 +44,19 @@ export default function MiddleMealPlan() {
   };
 
   useEffect(() => {
+    setToken(localStorage.getItem(ACCESS_TOKEN))
+    setUsername(localStorage.getItem(USER_NAME))
+    setEmail(localStorage.getItem(USER_EMAIL))
     fetchAllPost();
   }, []);
 
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    PostService.getPosts().then((res) => {
-      setPosts(res.data);
-    });
-  }, [posts]);
+  // useEffect(() => {
+  //   PostService.getPosts().then((res) => {
+  //     setPosts(res.data);
+  //   });
+  // }, [posts]);
 
   const [file, setFile] = useState(null);
 
@@ -223,7 +231,7 @@ export default function MiddleMealPlan() {
                   </div>
                   <div className="info">
                     <h3>{post.name}</h3>
-                    <small>{post.createdDate}</small>
+                    <small>{username} | {post.createdDate}</small>
                   </div>
                 </div>
                 <span

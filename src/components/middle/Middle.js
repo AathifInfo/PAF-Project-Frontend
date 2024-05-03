@@ -5,8 +5,16 @@ import profilepic from "../../images/profile-1.jpg";
 import PostService from "../../Services/PostService";
 import { uploadImage } from "../../util/APIUtils";
 import { toast } from "react-toastify";
+import profile1 from "../../images/profile-11.jpg";
+import profile2 from "../../images/profile-12.jpg";
+import profile3 from "../../images/profile-13.jpg";
+import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+
+
 export default function Middle() {
-  const [posts,setPosts]= useState([]);
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
   const [file, setFile] = useState(null);
 
@@ -26,6 +34,9 @@ export default function Middle() {
   };
 
   useEffect(() => {
+    setToken(localStorage.getItem(ACCESS_TOKEN))
+    setUsername(localStorage.getItem(USER_NAME))
+    setEmail(localStorage.getItem(USER_EMAIL))
     fetchAllImage();
   }, []);
 
@@ -200,8 +211,8 @@ export default function Middle() {
                   <img src={profilepic} alt="profile-photo" />
                 </div>
                 <div className="info">
-                  <h3>Lana Rose</h3>
-                  <small>Dubai, 15 Minutes Ago</small>
+                  <h3>{username}</h3>
+                  <small>{email}, 15 Minutes Ago</small>
                 </div>
               </div>
               <span
@@ -241,13 +252,13 @@ export default function Middle() {
             </div>
             <div className="liked-by">
               <span>
-                <img src="./images/profile-11.jpg" />
+                <img src={profile1} />
               </span>
               <span>
-                <img src="./images/profile-11.jpg" />
+                <img src={profile2} />
               </span>
               <span>
-                <img src="./images/profile-11.jpg" />
+                <img src={profile3} />
               </span>
               <p>
                 Liked by <b>Earnest Achiever</b> and 323 others.
