@@ -6,18 +6,23 @@ import PostService from "../../Services/PostService";
 import profile1 from "../../images/profile-11.jpg";
 import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
-import {
-  deleteMealPlanById,
-  getAllMealPlans,
-} from "../../util/APIUtils";
+import { deleteMealPlanById, getAllMealPlans } from "../../util/APIUtils";
 import { toast } from "react-toastify";
 import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+import UpdateMealPlanModal from "../updateMealPlanModal/UpdateMealPlanModal";
 
 export default function MiddleMealPlan() {
   const [mealPlans, setMealtPlans] = useState([]);
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedMealPlan, setSelectedMealPlan] = useState(null);
+
+  const handleUpdateClick = (mealPlan) => {
+    setSelectedMealPlan(mealPlan);
+    setShowUpdateModal(true);
+  };
 
   const fetchAllPost = async () => {
     try {
@@ -44,9 +49,9 @@ export default function MiddleMealPlan() {
   };
 
   useEffect(() => {
-    setToken(localStorage.getItem(ACCESS_TOKEN))
-    setUsername(localStorage.getItem(USER_NAME))
-    setEmail(localStorage.getItem(USER_EMAIL))
+    setToken(localStorage.getItem(ACCESS_TOKEN));
+    setUsername(localStorage.getItem(USER_NAME));
+    setEmail(localStorage.getItem(USER_EMAIL));
     fetchAllPost();
   }, []);
 
@@ -132,7 +137,6 @@ export default function MiddleMealPlan() {
   const refreshComponent = () => {
     fetchAllPost();
   };
-  
 
   return (
     <div className="middle">
@@ -231,7 +235,9 @@ export default function MiddleMealPlan() {
                   </div>
                   <div className="info">
                     <h3>{post.name}</h3>
-                    <small>{username} | {post.createdDate}</small>
+                    <small>
+                      {username} | {post.createdDate}
+                    </small>
                   </div>
                 </div>
                 <span
@@ -244,11 +250,16 @@ export default function MiddleMealPlan() {
                 <span className="edit">
                   <i className="uil uil-ellipsis-h" />
                 </span>
+                <span
+                  className="edit"
+                  onClick={() => handleUpdateClick(post)}
+                  title="Update Meal Plan"
+                >
+                  <i className="uil uil-edit"></i>
+                </span>
               </div>
               <div className="content">{post.description}</div>
-              <div className="photo">
-                {/* <img src={profile2} alt="" /> */}
-              </div>
+              <div className="photo">{/* <img src={profile2} alt="" /> */}</div>
               <div
                 className="caption"
                 style={{
@@ -346,6 +357,18 @@ export default function MiddleMealPlan() {
             </div>
           );
         })}
+
+        {showUpdateModal && selectedMealPlan && (
+          <UpdateMealPlanModal
+            mealPlan={selectedMealPlan}
+            onSave={(updatedMealPlan) => {
+              console.log("Updated Meal Plan:", updatedMealPlan);
+              // API call to save updated data
+              setShowUpdateModal(false);
+            }}
+            onClose={() => setShowUpdateModal(false)}
+          />
+        )}
       </div>
     </div>
   );

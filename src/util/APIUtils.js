@@ -104,6 +104,14 @@ export function uploadImage(file) {
   });
 }
 
+export function updateMealPlans(plans) {
+  return request({
+    url: API_BASE_URL + "/api/meal/plan",
+    method: "PUT",
+    body: JSON.stringify(plans),
+  });
+}
+
 
 // export function disLikePost({ likeId }) {
 //   return request({
