@@ -40,26 +40,25 @@
 }
 
 .middle .stories .story:nth-child(1){
-    background: url("../../images/story-1.jpg") no-repeat center/cover;
+    background: url("../../images/img/status1.png") no-repeat center/cover;
 
 }
 
 .middle .stories .story:nth-child(2){
-    background: url("../../images/story-2.jpg") no-repeat center/cover;
-
+    background: url("../../images/img/status2.png") no-repeat center/cover;
 }
 
 .middle .stories .story:nth-child(3){
-    background: url("../../images/story-3.jpg") no-repeat center/cover;
+    background: url("../../images/img/status3.png") no-repeat center/cover;
 
 }
 .middle .stories .story:nth-child(4){
-    background: url("../../images/story-4.jpg") no-repeat center/cover;
+    background: url("../../images/img/status4.png") no-repeat center/cover;
 
 }
 
 .middle .stories .story:nth-child(5){
-    background: url("../../images/story-5.jpg") no-repeat center/cover;
+    background: url("../../images/img/status5.avif") no-repeat center/cover;
 
 }
 

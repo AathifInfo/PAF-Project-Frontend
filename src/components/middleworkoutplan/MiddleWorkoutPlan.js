@@ -125,7 +125,7 @@ export default function MiddleWorkoutPlan() {
 
   return (
     <div className="middle">
-      <div className="stories">
+      <div className="storiesWP">
         <div className="story">
           <div className="profile-photo">
             <img src={profilepic} alt="" />
