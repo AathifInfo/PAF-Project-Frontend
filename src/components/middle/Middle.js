@@ -68,30 +68,11 @@ export default function Middle() {
   };
 
   const fileInputRef = useRef(null);
-  // useEffect(()=>{
-
-  // },[posts])
-
+  
   const handleClick = () => {
     const fileInput = document.getElementById("file-input");
     fileInput.click();
   };
-
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-
-  //     reader.onload = (event) => {
-  //       setImageUrl(event.target.result);
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //     setDisplay("");
-  //     setFile(event.target.files[0]);
-  //   }
-  // };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -218,14 +199,6 @@ export default function Middle() {
 
         <input type="submit" defaultValue="post" className="btn btn-primary" />
       </form>
-      {/* <div id="preview" style={{ display }}>
-        <span onClick={handleClosePreview}>
-        <i className="uil uil-multiply"></i>
-        </span>
-        <img src={imageUrl} >
-        </img>
-        <div className="button"> <button type="submit" defaultValue="post" className="btn btn-primary" >Post</button></div>
-      </div> */}
       <div
         id="preview"
         style={{ display: display !== "none" ? "block" : "none" }}
@@ -267,9 +240,6 @@ export default function Middle() {
               <div className="content">
                 <p>{post.description}</p>
               </div>
-              {/* <div className="photo">
-                <img src={post.data} alt="" />
-              </div> */}
               <div className="photo">
                 {post.contentType.startsWith("image/") && <img src={post.data} alt="" />}
                 {post.contentType.startsWith("video/") && <video src={post.data} controls />}
