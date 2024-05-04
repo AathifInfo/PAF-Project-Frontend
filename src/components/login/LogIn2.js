@@ -12,7 +12,7 @@ import {
 import backImage1 from "./../../images/img/bg1.png";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
-import { ACCESS_TOKEN, GOOGLE_AUTH_URL, USER_EMAIL, USER_NAME } from "../../constants";
+import { ACCESS_TOKEN, GOOGLE_AUTH_URL, USER_EMAIL, USER_ID, USER_NAME } from "../../constants";
 import { login } from "../../util/APIUtils";
 
 import { toast } from "react-toastify";
@@ -51,6 +51,7 @@ function LogIn2({ authenticated }) {
         localStorage.setItem(ACCESS_TOKEN, response.token);
         localStorage.setItem(USER_NAME, response.username)
         localStorage.setItem(USER_EMAIL, response.email)
+        localStorage.setItem(USER_ID, response.id)
         toast("You're successfully logged in!", { type: "success" });
         console.log("login succuess!");
         console.log(response.token);

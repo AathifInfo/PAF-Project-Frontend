@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import profile1 from "../../images/profile-11.jpg";
 import profile2 from "../../images/profile-12.jpg";
 import profile3 from "../../images/profile-13.jpg";
-import { ACCESS_TOKEN, USER_EMAIL, USER_NAME } from "../../constants";
+import { ACCESS_TOKEN, USER_EMAIL, USER_ID, USER_NAME } from "../../constants";
 
 export default function MiddleWorkoutStatus() {
   const [token, setToken] = useState("");
@@ -18,7 +18,13 @@ export default function MiddleWorkoutStatus() {
   const [file, setFile] = useState(null);
 
   const [imageUrl, setImageUrl] = useState("");
+  
   const [description, setDescription] = useState("");
+  const [userId, setUserIdn] = useState("");
+  const [distance, setDistance] = useState("");
+  const [pushUp, setPushUp] = useState("");
+  const [weightLifted, setWeightLifted] = useState("");
+  const [id, setId] = useState("");
 
   const [display, setDisplay] = useState("none");
 
@@ -32,10 +38,23 @@ export default function MiddleWorkoutStatus() {
     setDescription(event.target.value);
   };
 
+  const onDistanceChange = (event) => {
+    setDistance(event.target.value);
+  };
+
+  const onPushUpChange = (event) => {
+    setPushUp(event.target.value);
+  };
+
+  const onWeightLiftChange = (event) => {
+    setWeightLifted(event.target.value);
+  };
+
   useEffect(() => {
     setToken(localStorage.getItem(ACCESS_TOKEN));
     setUsername(localStorage.getItem(USER_NAME));
     setEmail(localStorage.getItem(USER_EMAIL));
+    setUserIdn(localStorage.getItem(USER_ID));
     fetchAllImage();
   }, []);
 
@@ -44,11 +63,17 @@ export default function MiddleWorkoutStatus() {
 
     formData.append("file", file);
     formData.append("description", description);
+    formData.append("pushUp", pushUp);
+    formData.append("weightLifted", weightLifted);
+    formData.append("distance", distance);
+    formData.append("userId", userId);
+    formData.append("id", id);
+    
 
     console.log(file);
 
     axios
-      .post("http://localhost:8088/api/media/upload/image", formData)
+      .post("http://localhost:8088/api/workout/status/post", formData)
       .then((response) => {
         console.log("File uploaded successfully", response);
         setImageUrl(response.data.data.url);
@@ -104,16 +129,17 @@ export default function MiddleWorkoutStatus() {
 
   const fetchAllImage = async () => {
     axios
-      .get("http://localhost:8088/api/media/all")
+      .get("http://localhost:8088/api/workout/status/post")
       .then((response) => {
-        setMediaItems(response.data);
+        console.log(response.data.data);
+        setMediaItems(response.data.data);
       })
       .catch((error) => console.error("Error fetching media:", error));
   };
 
   const handleDelete = (planId) => {
     axios
-      .delete("http://localhost:8088/api/media/delete/media/" + planId)
+      .delete("http://localhost:8088/api/workout/status/post/" + planId)
       .then((response) => {
         console.log("File delete successfully", response);
         setImageUrl(response.data.data.url);
@@ -171,7 +197,7 @@ export default function MiddleWorkoutStatus() {
         </div>
       </div>
       {/*-story ends here*/}
-      <form onSubmit={onFileUpload} className="create-post">
+      <form onSubmit={onFileUpload} className="">
         <div className="profile-photo">
           <img src={profilepic} alt="profile-photo" />
         </div>
@@ -179,10 +205,29 @@ export default function MiddleWorkoutStatus() {
           type="text"
           value={description}
           onChange={onDescriptionChange}
-          // value={content}
-          placeholder="what's on your mind Nishi?"
+          placeholder="what's on your mind?"
           id="create-post"
-          // onChange={(event) => setContent(event.target.value)}
+        />
+        <input
+          type="number"
+          value={distance}
+          onChange={onDistanceChange}
+          placeholder="what's on your distance travel?"
+          id="create-post"
+        />
+        <input
+          type="number"
+          value={pushUp}
+          onChange={onPushUpChange}
+          placeholder="what's on your push up counts?"
+          id="create-post"
+        />
+        <input
+          type="number"
+          value={weightLifted}
+          onChange={onWeightLiftChange}
+          placeholder="what's on your weight lifted counts?"
+          id="create-post"
         />
         <div className="attach">
           <span>
@@ -197,7 +242,7 @@ export default function MiddleWorkoutStatus() {
           </span>
         </div>
 
-        <input type="submit" defaultValue="post" className="btn btn-primary" />
+        <input type="submit" defaultValue="post" className="btn btn-primary" style={{marginTop: "10px"}}/>
       </form>
       <div
         id="preview"
@@ -239,10 +284,13 @@ export default function MiddleWorkoutStatus() {
               </div>
               <div className="content">
                 <p>{post.description}</p>
+                <p>Distance: {post.distance}</p>
+                <p>PushUp: {post.pushUp}</p>
+                <p>Weight Lifted: {post.weightLifted}</p>
               </div>
               <div className="photo">
-                {post.contentType.startsWith("image/") && <img src={post.data} alt="" />}
-                {post.contentType.startsWith("video/") && <video src={post.data} controls />}
+                {post.mediaEntityDTO.contentType.startsWith("image/") && <img src={post.mediaEntityDTO.data} alt="" />}
+                {post.mediaEntityDTO.contentType.startsWith("video/") && <video src={post.mediaEntityDTO.data} controls />}
               </div>
               <div className="action-button">
                 <div className="interation-buttons">
