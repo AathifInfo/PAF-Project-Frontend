@@ -212,6 +212,72 @@
     margin-left: 0.5rem;
 }
 
+.update-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+    z-index: 1000; /* Make sure it's on top of other content */
+  }
+  
+  .form-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1001; /* Ensure the form itself is above the overlay */
+  }
+  
+  .form-content input[type="text"],
+  .form-content input[type="file"] {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+  }
+  
+  .form-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .form-content span {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+
+  .form-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .form-content button:last-of-type {
+    background-color: #dc3545; /* Different color for the close button */
+  }
+
 /* Media queries for small laptops and big tabs*/
 @media screen and (max-width:1200px) {
     .container{

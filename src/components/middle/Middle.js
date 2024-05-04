@@ -24,6 +24,9 @@ export default function Middle() {
 
   const [mediaItems, setMediaItems] = useState([]);
 
+  const [updateFormVisible, setUpdateFormVisible] = useState(false);
+  const [currentPost, setCurrentPost] = useState(null);
+
   const onFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -32,11 +35,30 @@ export default function Middle() {
     setDescription(event.target.value);
   };
 
+  const handleUpdateClick = (post) => {
+    setCurrentPost(post);
+    setDescription(post.description);
+    setImageUrl(post.data);
+    setFile(null);
+    setUpdateFormVisible(true);
+  };
+
   useEffect(() => {
     setToken(localStorage.getItem(ACCESS_TOKEN));
     setUsername(localStorage.getItem(USER_NAME));
     setEmail(localStorage.getItem(USER_EMAIL));
     fetchAllImage();
+    const handleEscape = (event) => {
+      if (event.keyCode === 27) {
+        setUpdateFormVisible(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, []);
 
   const onFileUpload = () => {
@@ -68,7 +90,7 @@ export default function Middle() {
   };
 
   const fileInputRef = useRef(null);
-  
+
   const handleClick = () => {
     const fileInput = document.getElementById("file-input");
     fileInput.click();
@@ -76,8 +98,8 @@ export default function Middle() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const fileType = file.type.split("/")[0]; 
-    console.log("The fileType: "+fileType);
+    const fileType = file.type.split("/")[0];
+    console.log("The fileType: " + fileType);
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -88,18 +110,29 @@ export default function Middle() {
       if (fileType === "image") {
         reader.readAsDataURL(file);
       } else if (fileType === "video") {
-        reader.readAsDataURL(file); 
+        reader.readAsDataURL(file);
       }
 
       setFile(file);
     }
   };
 
+  // const handleClosePreview = () => {
+  //   setImageUrl("");
+  //   setDisplay("none");
+  //   setFile(null);
+  //   fileInputRef.current.value = "";
+  // };
+
   const handleClosePreview = () => {
+    if (fileInputRef.current) {
+      // Only try to reset if the element exists
+      fileInputRef.current.value = ""; // Reset the file input value
+    }
+    setUpdateFormVisible(false);
     setImageUrl("");
-    setDisplay("none");
+    setDescription("");
     setFile(null);
-    fileInputRef.current.value = ""; // Reset the file input value
   };
 
   const fetchAllImage = async () => {
@@ -129,6 +162,30 @@ export default function Middle() {
             "Oops! Error deleting file:. Please try again!",
           { type: "error" }
         );
+      });
+  };
+
+  const updateMedia = () => {
+    const formData = new FormData();
+    formData.append("description", description);
+    if (file) {
+      formData.append("file", file);
+    }
+
+    axios
+      .put(
+        `http://localhost:8088/api/media/update/image/${currentPost.id}`,
+        formData
+      )
+      .then((response) => {
+        console.log("Media updated successfully", response);
+        toast("Media updated successfully!", { type: "success" });
+        setUpdateFormVisible(false);
+        refreshComponent(); // To refresh and fetch updated media items
+      })
+      .catch((error) => {
+        console.error("Error updating media:", error);
+        toast("Error updating media. Please try again!", { type: "error" });
       });
   };
 
@@ -236,13 +293,24 @@ export default function Middle() {
                 <span className="edit">
                   <i className="uil uil-ellipsis-h" />
                 </span>
+                <span
+                  className="edit"
+                  onClick={() => handleUpdateClick(post)}
+                  title="Update Media"
+                >
+                  <i className="uil uil-edit"></i>
+                </span>
               </div>
               <div className="content">
                 <p>{post.description}</p>
               </div>
               <div className="photo">
-                {post.contentType.startsWith("image/") && <img src={post.data} alt="" />}
-                {post.contentType.startsWith("video/") && <video src={post.data} controls />}
+                {post.contentType.startsWith("image/") && (
+                  <img src={post.data} alt="" />
+                )}
+                {post.contentType.startsWith("video/") && (
+                  <video src={post.data} controls />
+                )}
               </div>
               <div className="action-button">
                 <div className="interation-buttons">
@@ -287,6 +355,39 @@ export default function Middle() {
           );
         })}
       </div>
+      {updateFormVisible && (
+        <div className="update-form">
+          <div className="form-content">
+            <span
+              onClick={() => setUpdateFormVisible(false)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "10px",
+                cursor: "pointer",
+              }}
+            >
+              <i className="uil uil-times"></i>
+            </span>
+            <input
+              type="text"
+              value={description}
+              onChange={onDescriptionChange}
+              placeholder="Update description"
+            />
+            <input type="file" onChange={handleFileChange} ref={fileInputRef} />
+            <button onClick={updateMedia} style={{ marginTop: "10px" }}>
+              Update
+            </button>
+            <button
+              onClick={() => setUpdateFormVisible(false)}
+              style={{ marginTop: "10px" }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
