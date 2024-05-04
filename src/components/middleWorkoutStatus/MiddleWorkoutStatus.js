@@ -18,7 +18,7 @@ export default function MiddleWorkoutStatus() {
   const [file, setFile] = useState(null);
 
   const [imageUrl, setImageUrl] = useState("");
-  
+
   const [description, setDescription] = useState("");
   const [userId, setUserIdn] = useState("");
   const [distance, setDistance] = useState("");
@@ -27,6 +27,20 @@ export default function MiddleWorkoutStatus() {
   const [id, setId] = useState("");
 
   const [display, setDisplay] = useState("none");
+
+  const [updateFormVisible, setUpdateFormVisible] = useState(false);
+  const [currentPost, setCurrentPost] = useState({});
+
+  const handleUpdateClick = (post) => {
+    setCurrentPost(post);
+    setDescription(post.description);
+    setDistance(post.distance);
+    setPushUp(post.pushUp);
+    setWeightLifted(post.weightLifted);
+    setImageUrl(post.mediaEntityDTO.data); // Assuming the URL is directly accessible
+    setId(post.id);
+    setUpdateFormVisible(true);
+  };
 
   const [mediaItems, setMediaItems] = useState([]);
 
@@ -68,7 +82,6 @@ export default function MiddleWorkoutStatus() {
     formData.append("distance", distance);
     formData.append("userId", userId);
     formData.append("id", id);
-    
 
     console.log(file);
 
@@ -93,7 +106,7 @@ export default function MiddleWorkoutStatus() {
   };
 
   const fileInputRef = useRef(null);
-  
+
   const handleClick = () => {
     const fileInput = document.getElementById("file-input");
     fileInput.click();
@@ -102,7 +115,7 @@ export default function MiddleWorkoutStatus() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     const fileType = file.type.split("/")[0]; // This will give 'image' or 'video'
-    console.log("The fileType: "+fileType);
+    console.log("The fileType: " + fileType);
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -120,11 +133,22 @@ export default function MiddleWorkoutStatus() {
     }
   };
 
+  // const handleClosePreview = () => {
+  //   setImageUrl("");
+  //   setDisplay("none");
+  //   setFile(null);
+  //   fileInputRef.current.value = ""; // Reset the file input value
+  // };
+
   const handleClosePreview = () => {
+    if (fileInputRef.current) {
+      // Only try to reset if the element exists
+      fileInputRef.current.value = ""; // Reset the file input value
+    }
+    setUpdateFormVisible(false);
     setImageUrl("");
-    setDisplay("none");
+    setDescription("");
     setFile(null);
-    fileInputRef.current.value = ""; // Reset the file input value
   };
 
   const fetchAllImage = async () => {
@@ -160,6 +184,37 @@ export default function MiddleWorkoutStatus() {
 
   const refreshComponent = () => {
     fetchAllImage();
+  };
+
+  const submitUpdate = () => {
+    const formData = new FormData();
+    formData.append("id", currentPost.id);
+    formData.append("userId", userId); // Assuming userId is available from state
+    formData.append("description", description);
+    formData.append("distance", distance);
+    formData.append("pushUp", pushUp);
+    formData.append("weightLifted", weightLifted);
+    if (file) {
+      formData.append("file", file);
+    }
+
+    axios
+      .put(
+        `http://localhost:8088/api/workout/status/post/${currentPost.id}`,
+        formData
+      )
+      .then((response) => {
+        console.log("Workout status updated successfully", response);
+        toast("Workout status updated successfully!", { type: "success" });
+        setUpdateFormVisible(false);
+        refreshComponent();
+      })
+      .catch((error) => {
+        console.error("Error updating workout status:", error);
+        toast("Error updating workout status. Please try again!", {
+          type: "error",
+        });
+      });
   };
 
   return (
@@ -242,7 +297,12 @@ export default function MiddleWorkoutStatus() {
           </span>
         </div>
 
-        <input type="submit" defaultValue="post" className="btn btn-primary" style={{marginTop: "10px"}}/>
+        <input
+          type="submit"
+          defaultValue="post"
+          className="btn btn-primary"
+          style={{ marginTop: "10px" }}
+        />
       </form>
       <div
         id="preview"
@@ -281,6 +341,13 @@ export default function MiddleWorkoutStatus() {
                 <span className="edit">
                   <i className="uil uil-ellipsis-h" />
                 </span>
+                <span
+                  className="edit"
+                  onClick={() => handleUpdateClick(post)}
+                  title="Update Workout Status"
+                >
+                  <i className="uil uil-edit"></i>
+                </span>
               </div>
               <div className="content">
                 <p>{post.description}</p>
@@ -289,8 +356,12 @@ export default function MiddleWorkoutStatus() {
                 <p>Weight Lifted: {post.weightLifted}</p>
               </div>
               <div className="photo">
-                {post.mediaEntityDTO.contentType.startsWith("image/") && <img src={post.mediaEntityDTO.data} alt="" />}
-                {post.mediaEntityDTO.contentType.startsWith("video/") && <video src={post.mediaEntityDTO.data} controls />}
+                {post.mediaEntityDTO.contentType.startsWith("image/") && (
+                  <img src={post.mediaEntityDTO.data} alt="" />
+                )}
+                {post.mediaEntityDTO.contentType.startsWith("video/") && (
+                  <video src={post.mediaEntityDTO.data} controls />
+                )}
               </div>
               <div className="action-button">
                 <div className="interation-buttons">
@@ -335,6 +406,54 @@ export default function MiddleWorkoutStatus() {
           );
         })}
       </div>
+      {updateFormVisible && (
+    <div className="update-form">
+        <div className="form-content">
+            <span
+                onClick={() => setUpdateFormVisible(false)}
+                className="close-icon"
+            >
+                <i className="uil uil-times"></i>
+            </span>
+            <input
+                type="text"
+                value={description}
+                onChange={onDescriptionChange}
+                placeholder="Update description"
+            />
+            <input
+                type="number"
+                value={distance}
+                onChange={onDistanceChange}
+                placeholder="Update distance traveled"
+            />
+            <input
+                type="number"
+                value={pushUp}
+                onChange={onPushUpChange}
+                placeholder="Update push up counts"
+            />
+            <input
+                type="number"
+                value={weightLifted}
+                onChange={onWeightLiftChange}
+                placeholder="Update weight lifted"
+            />
+            {currentPost.mediaEntityDTO &&
+            currentPost.mediaEntityDTO.contentType.startsWith("image/") && (
+                <img src={imageUrl} alt="Uploaded content" />
+            )}
+            {currentPost.mediaEntityDTO &&
+            currentPost.mediaEntityDTO.contentType.startsWith("video/") && (
+                <video src={imageUrl} controls />
+            )}
+            <input type="file" onChange={handleFileChange} ref={fileInputRef} />
+            <button onClick={submitUpdate} className="update-button">Update</button>
+            <button onClick={() => setUpdateFormVisible(false)} className="close-button">Close</button>
+        </div>
+    </div>
+)}
+
     </div>
   );
 }
