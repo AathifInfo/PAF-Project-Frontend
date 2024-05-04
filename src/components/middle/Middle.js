@@ -76,19 +76,19 @@ export default function Middle() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const fileType = file.type.split("/")[0]; // This will give 'image' or 'video'
+    const fileType = file.type.split("/")[0]; 
     console.log("The fileType: "+fileType);
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
         setImageUrl(event.target.result);
-        setDisplay(fileType); // Use this state to determine rendering logic
+        setDisplay(fileType);
       };
 
       if (fileType === "image") {
         reader.readAsDataURL(file);
       } else if (fileType === "video") {
-        reader.readAsDataURL(file); // You might need to handle video files differently based on your requirements
+        reader.readAsDataURL(file); 
       }
 
       setFile(file);
