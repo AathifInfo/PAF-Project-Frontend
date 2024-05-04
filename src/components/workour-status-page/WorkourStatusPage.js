@@ -1,9 +1,9 @@
 import React from 'react'
-import Middle from '../middle/Middle';
 import Left from '../left/Left';
 import Right from '../right/Right';
 import Header from '../header/Header';
 import "./WorkourStatusPage.css";
+import MiddleWorkoutStatus from '../middleWorkoutStatus/MiddleWorkoutStatus';
 export default function WorkourStatusPage ({ authenticated, onLogout }) {
   return (
     <div>
@@ -11,7 +11,7 @@ export default function WorkourStatusPage ({ authenticated, onLogout }) {
     <main>
        <div className='container'>
           <Left />
-          <Middle />
+          <MiddleWorkoutStatus />
        </div>
     </main>
     </div>
