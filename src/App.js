@@ -66,7 +66,6 @@ function App() {
   };
 
   const handleLogin = () => {
-    debugger;
     setAuthenticated(true);
   };
 
