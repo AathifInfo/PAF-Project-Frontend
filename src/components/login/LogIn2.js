@@ -17,7 +17,7 @@ import { login } from "../../util/APIUtils";
 
 import { toast } from "react-toastify";
 
-function LogIn2({ authenticated }) {
+function LogIn2({ authenticated, onLogin }) {
   const [state, setState] = useReducer(
     (prevState, newState) => {
       return { ...prevState, ...newState };
@@ -52,6 +52,7 @@ function LogIn2({ authenticated }) {
         localStorage.setItem(USER_NAME, response.username)
         localStorage.setItem(USER_EMAIL, response.email)
         localStorage.setItem(USER_ID, response.id)
+        onLogin();
         toast("You're successfully logged in!", { type: "success" });
         console.log("login succuess!");
         console.log(response.token);

@@ -3,14 +3,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "./App.css";
 
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 // import { Routes, Route } from "react-router-dom";
 
 import MainPage from "./components/main-page/MainPage";
 import SignUp from "./components/signup/SignUp2";
 import LogIn from "./components/login/LogIn2";
 import Left from "./components/left/Left";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 
 import NotFound from "./common/NotFound";
@@ -27,47 +27,62 @@ import LogIn2 from "./components/login/LogIn2";
 import SignUp2 from "./components/signup/SignUp2";
 
 function App() {
-  // const navigate = useNavigate();
-  const [state, setState] = useReducer(
-    (prevState, newState) => {
-      return { ...prevState, ...newState };
-    },
-    {
-      authenticated: true,
-      currentUser: null,
-      loading: true,
-    }
-  );
+  const navigate = useNavigate();
+  // const [state, setState] = useReducer(
+  //   (prevState, newState) => {
+  //     return { ...prevState, ...newState };
+  //   },
+  //   {
+  //     authenticated: true,
+  //     currentUser: null,
+  //     loading: true,
+  //   }
+  // );
+  const [authenticated, setAuthenticated] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const loadCurrentlyLoggedInUser = () => {
     console.log("load current user")
     getCurrentUser()
       .then((response) => {
-        setState({
-          currentUser: response.name,
-          authenticated: true,
-          loading: false,
-        });
-        console.log("load current auth: "+state.authenticated)
+        // setState({
+        //   currentUser: response.name,
+        //   authenticated: true,
+        //   loading: false,
+        // });
+        setCurrentUser(response.name);
+        setAuthenticated(true);
+        setLoading(false);
+        console.log("load current auth: "+authenticated)
       })
       .catch((error) => {
         console.log("load current user error!")
-        setState({
-          loading: false,
-        });
+        // setState({
+        //   loading: false,
+        // });
+        setLoading(false);
       });
   };
 
+  const handleLogin = () => {
+    debugger;
+    setAuthenticated(true);
+  };
+
   const handleLogout = () => {
+    debugger;
     console.log("App component handle logout is triggered")
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(USER_EMAIL);
     localStorage.removeItem(USER_NAME);
-    setState({
-      authenticated: false,
-      currentUser: null,
-    });
-    console.log("Log out auth: "+state.authenticated)
+    // setState({
+    //   authenticated: false,
+    //   currentUser: null,
+    // });
+    setAuthenticated(false);
+    setCurrentUser(null);
+    console.log("Log out auth: "+ authenticated)
     toast("You're safely logged out!", {
       type: "success",
       position: "bottom-right",
@@ -79,90 +94,45 @@ function App() {
       progress: undefined,
       theme: "dark",
     });
-    // navigate("/login");
+    navigate("/login");
   };
 
   useEffect(() => {
     loadCurrentlyLoggedInUser();
   }, []);
 
-  if (state.loading) {
+  if (loading) {
     return <LoadingIndicator />;
   }
 
   return (
     <div className="App">
-      {/* <Router>
-        <Switch>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/log-in" element={<LogIn />} />
-          <Route path="/left" element={<Left />} />
-        </Switch>
-      </Router> */}
-
       <Routes>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute
-                authenticated={state.authenticated}
-                currentUser={state.currentUser}
-                onLogout={handleLogout}
-                component={MainPage}
-              />
-            }
-          />
-          <Route
-            path="/workoutplan"
-            element={
-              <PrivateRoute
-                authenticated={state.authenticated}
-                currentUser={state.currentUser}
-                onLogout={handleLogout}
-                component={WorkourPlanPage}
-              />
-            }
-          />
-          <Route
-            path="/workoutstatus"
-            element={
-              <PrivateRoute
-                authenticated={state.authenticated}
-                currentUser={state.currentUser}
-                onLogout={handleLogout}
-                component={WorkourStatusPage}
-              />
-            }
-          />
-          <Route
-            path="/mealplan"
-            element={
-              <PrivateRoute
-                authenticated={state.authenticated}
-                currentUser={state.currentUser}
-                onLogout={handleLogout}
-                component={MealPlanPage}
-              />
-            }
-          />
-          <Route
-            path="/login"
-            element={<LogIn2 authenticated={state.authenticated} />}
-          />
-          <Route
-            path="/signup"
-            element={<SignUp2 authenticated={state.authenticated} />}
-          />
-          {/* <Route
-            path="/"
-            element={
-              <MainPage
-                authenticated={state.authenticated}
-                onLogout={handleLogout}
-              />
-            }
-          /> */}
+        <Route
+          path="/"
+          element={<MainPage authenticated={authenticated} onLogout={handleLogout} />}
+        />
+        <Route
+          path="/workoutplan"
+          element={<PrivateRoute authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} component={WorkourPlanPage} />}
+        />
+        <Route
+          path="/workoutstatus"
+          element={<PrivateRoute authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} component={WorkourStatusPage} />}
+        />
+        <Route
+          path="/mealplan"
+          element={<PrivateRoute authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} component={MealPlanPage} />}
+        />
+        <Route
+          path="/login"
+          element={<LogIn2 authenticated={authenticated} onLogin={handleLogin} />}
+        />
+        <Route
+          path="/signup"
+          element={<SignUp2 authenticated={authenticated} />}
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer />
     </div>
