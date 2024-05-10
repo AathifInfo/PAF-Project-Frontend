@@ -56,7 +56,7 @@ function LogIn2({ authenticated, onLogin }) {
         toast("You're successfully logged in!", { type: "success" });
         console.log("login succuess!");
         console.log(response.token);
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         toast(

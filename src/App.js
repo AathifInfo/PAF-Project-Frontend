@@ -93,7 +93,7 @@ function App() {
       progress: undefined,
       theme: "dark",
     });
-    navigate("/login");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -108,8 +108,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route
-          path="/"
-          element={<MainPage authenticated={authenticated} onLogout={handleLogout} />}
+          path="/home"
+          element={<PrivateRoute authenticated={authenticated} onLogout={handleLogout} component={MainPage} />}
         />
         <Route
           path="/workoutplan"
@@ -124,7 +124,7 @@ function App() {
           element={<PrivateRoute authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} component={MealPlanPage} />}
         />
         <Route
-          path="/login"
+          path="/"
           element={<LogIn2 authenticated={authenticated} onLogin={handleLogin} />}
         />
         <Route
